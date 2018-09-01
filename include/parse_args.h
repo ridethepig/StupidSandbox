@@ -6,6 +6,8 @@
 #define STUPIDSANDBOX_PARSE_ARGS_H
 
 #include <getopt.h>
+#include <unistd.h>
+#include <error.h>
 #include <cstdio>
 #include <cstdlib>
 
@@ -37,51 +39,8 @@ void print_usage() {
             "  1.exited: WEXITSTATUS TIME(ms) MEMORY(KB)\n"
             "  2.killed: message\n"
             "Notes: PROGRAM must be compiled statically!\n");
-    exit(0);
 }
 
-int parse_args(int argc, const char * argv[]) {
-    int longIndex = 0, opt = 0;
-    opt = getopt_long(argc, argv, optString, longOpts, &longIndex);
-    while (opt != -1) {
-        switch (opt) {
-            case 't':
-                timeLimit = atoi(optarg);
-                if (timeLimit <= 0) error(EX_ERROR, 0,
-                                          "TIME_LIMIT must be a positive integer.");
-                break;
-
-            case 'm':
-                memoryLimit = atoi(optarg);
-                if (memoryLimit <= 0) error(EX_ERROR, 0,
-                                            "MEMORY_LIMIT must be a positive integer.");
-                break;
-
-            case 'i':
-                if (optarg == 0) error(EX_ERROR, 0, "INPUT_FILE missing.");
-                infileName = optarg;
-                break;
-
-            case 'o':
-                if (optarg == 0) error(EX_ERROR, 0, "OUTPUT_FILE missing.");
-                outfileName = optarg;
-                break;
-
-            case 'h':
-                print_usage();
-                break;
-
-
-
-            default:
-                error(EX_ERROR, 0,
-                      "Please run 'caretaker --help' for more information.");
-                break;
-        }
-        opt = getopt_long(argc, argv, optString, longOpts, &longIndex);
-    }
-    if (optind == argc) error(EX_ERROR, 0, "PROGRAM not specified.");
-    else prgfileName = argv[optind];
-}
+int parse_args(int argc, char * argv[]);
 
 #endif //STUPIDSANDBOX_PARSE_ARGS_H
