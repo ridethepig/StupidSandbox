@@ -6,6 +6,7 @@
 #define STUPIDSANDBOX_DATA_H
 
 #include <string>
+#include "pathutils.h"
 
 typedef struct RUN_INFO_H{
 public:
@@ -35,9 +36,9 @@ public:
     }
 private:
     bool check_enabled = true;
-    int memory_limit,
-        time_limit,
-        output_limit;
+    int memory_limit = 128 * 1024,
+        time_limit = 1000,
+        output_limit = 20 * 1024 * 1024;
     std::string input_path;
     std::string output_path;
     std::string program_path;

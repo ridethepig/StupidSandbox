@@ -10,7 +10,7 @@
 
 const std::string default_log_path = "./sandbox.log";
 
-FILE* log_file;
+extern FILE* log_file;
 
 int init_log();
 int clean_log();

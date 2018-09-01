@@ -6,6 +6,26 @@
 #include "include/data.h"
 #include "include/exitcode.h"
 
+char *program_name;
+
+void print_usage() {
+    printf("Usage: %s [OPTION] PROGRAM \n", program_name);
+    printf("Run and watch the contestant's PROGRAM. (Part of the Eeevee)\n");
+    printf(
+            "Options:\n"
+            "  -t, --time=TIME_LIMIT           in ms, positive int only (default is 1000(1s))\n"
+            "  -m, --memory=MEMORY_LIMIT       in KB, positive int only (default is 131072(128mb))\n"
+            "  -p, --output-limit=OUTPUT_LIMIT in B, positive int only (default is 20971520(20mb))\n"
+            "  -i, --input=INPUT_FILE          must in the same directory as PROGRAM\n"
+            "      (file name must be identical with the problem description)\n"
+            "  -o, --output=OUTPUT_FILENAME    the NAME of output file (should NOT exist!)\n"
+            "  -h, --help                      print this help\n\n"
+            "Output:\n"
+            "  1.exited: WEXITSTATUS TIME(ms) MEMORY(KB)\n"
+            "  2.killed: message\n"
+            "Notes: PROGRAM must be compiled statically!\n");
+}
+
 int parse_args(int argc, char * argv[], run_info_t & run_info) {
     int longIndex = 0, opt = 0;
     opt = getopt_long(argc, argv, optString, longOpts, &longIndex);
@@ -33,12 +53,12 @@ int parse_args(int argc, char * argv[], run_info_t & run_info) {
                 break;
             }
             case 'i': {
-                if (optarg == 0) ERROR(EXIT_ERROR, "INPUT_FILE missing.");
+                if (optarg == nullptr) ERROR(EXIT_ERROR, "INPUT_FILE missing.");
                 run_info.set_input_path(optarg);
                 break;
             }
             case 'o': {
-                if (optarg == 0) ERROR(EXIT_ERROR, "OUTPUT_FILE missing.");
+                if (optarg == nullptr) ERROR(EXIT_ERROR, "OUTPUT_FILE missing.");
                 run_info.set_output_path(optarg);
                 break;
             }
